@@ -1,18 +1,28 @@
 import styled from '@emotion/native';
 import React from 'react';
-import {StatusBar, Text} from 'react-native';
+import {StatusBar} from 'react-native';
+import Overview, {DayData} from './src/screens/Overview';
+
+const data: DayData[] = [
+  {day: 'Monday', timeInRangeDecimal: 0.24},
+  {day: 'Tuesday', timeInRangeDecimal: 0.74},
+  {day: 'Wednesday', timeInRangeDecimal: 0.94},
+  {day: 'Thursday', timeInRangeDecimal: 0.87},
+  {day: 'Friday', timeInRangeDecimal: 0.65},
+  {day: 'Saturday', timeInRangeDecimal: 0.76},
+  {day: 'Sunday', timeInRangeDecimal: 0.99},
+];
 
 const App = () => {
   return (
     <StyledSafeAreaView>
       <StatusBar barStyle={'light-content'} />
-      <Text>Sofia on Sofia</Text>
+      <Overview weekData={data} />
     </StyledSafeAreaView>
   );
 };
 
 const StyledSafeAreaView = styled.SafeAreaView`
-  background-color: salmon;
   flex: 1;
 `;
 

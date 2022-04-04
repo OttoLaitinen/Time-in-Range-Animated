@@ -13,7 +13,9 @@
     "@emotion/native": "^11.0.0",
     "@emotion/react": "^11.8.2",
     "react": "17.0.2",
-    "react-native": "0.68.0"
+    "react-native": "0.68.0",
+    "react-native-svg": "^12.3.0",
+    "use-count-up": "^3.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
