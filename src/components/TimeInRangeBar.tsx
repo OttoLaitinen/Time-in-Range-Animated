@@ -1,7 +1,6 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useState} from 'react';
 import styled from '@emotion/native';
 import {CountUp} from 'use-count-up';
-
 import {Animated} from 'react-native';
 
 import Spacer from '../components/Spacer';
@@ -10,41 +9,48 @@ interface Props {
   weekDay: string;
   percentageDecimal: number;
   animDurMs?: number;
+  opacityAnimation: Animated.AnimatedInterpolation;
+  barFillAnimation: Animated.AnimatedInterpolation;
 }
 
 export default function TimeInRangeBar({
   weekDay,
   percentageDecimal,
   animDurMs = 2000,
+  opacityAnimation,
+  barFillAnimation,
 }: Props) {
-  const animatedProgress = useRef(new Animated.Value(0)).current;
-  const percentage = percentageDecimal * 100;
+  const [isCounting, setIsCounting] = useState(false);
+  const percentage = Math.round(percentageDecimal * 100);
 
-  useEffect(() => {
-    Animated.timing(animatedProgress, {
-      toValue: percentageDecimal,
-      duration: animDurMs,
-      useNativeDriver: false,
-    }).start();
-  }, [animatedProgress, percentageDecimal, animDurMs]);
-
-  const growingHeight = animatedProgress.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0%', '100%'],
+  barFillAnimation.addListener(s => {
+    s.value > 0 && setIsCounting(true);
   });
 
-  console.log(animatedProgress);
+  const growingHeight = barFillAnimation
+    .interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, percentageDecimal],
+    })
+    .interpolate({
+      inputRange: [0, 1],
+      outputRange: ['0%', '100%'],
+    });
 
   return (
-    <Container>
+    <Container style={{opacity: opacityAnimation}}>
       <PercentageText>
-        <CountUp isCounting end={percentage} duration={animDurMs / 1000} />
+        <CountUp
+          isCounting={isCounting}
+          end={percentage}
+          duration={animDurMs / 1000}
+        />
       </PercentageText>
       <Spacer amount={8} axis="y" />
+
       <BarContainer>
         <Bar percentage={percentage} style={{height: growingHeight}} />
       </BarContainer>
-
       <Spacer amount={8} />
 
       <WeekDayText>{weekDay}</WeekDayText>
@@ -52,7 +58,7 @@ export default function TimeInRangeBar({
   );
 }
 
-const Container = styled.View`
+const Container = styled(Animated.View)`
   display: flex;
   flex-direction: column;
   align-items: center;

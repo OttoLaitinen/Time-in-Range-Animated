@@ -8,7 +8,7 @@ import {CountUp} from 'use-count-up';
 const width = Dimensions.get('window').width;
 const size = width - 220;
 const sizeHalfed = size / 2;
-const strokeWidth = 28;
+const strokeWidth = width / 16;
 const radius = (size - strokeWidth) / 2;
 const circumference = radius * 2 * Math.PI;
 
@@ -113,7 +113,7 @@ const PercentageView = styled.View`
 `;
 
 const PercentageText = styled.Text`
-  font-size: 48px;
+  font-size: 42px;
   font-family: 'Karla-Regular';
   font-weight: bold;
   color: #2a2727;

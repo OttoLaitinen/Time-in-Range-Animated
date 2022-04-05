@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from '@emotion/native';
-import Spacer from '../components/Spacer';
 import {Animated, ViewStyle} from 'react-native';
 
 interface Props {
@@ -12,12 +11,7 @@ interface Props {
 export default function Card({title, content, style}: Props) {
   return (
     <Container style={style}>
-      {title && (
-        <>
-          <Title>{title}</Title>
-          <Spacer amount={8} axis="y" />
-        </>
-      )}
+      {title && <Title>{title}</Title>}
       <Content>{content}</Content>
     </Container>
   );
@@ -29,7 +23,7 @@ const Container = styled(Animated.View)`
   align-items: flex-start;
   width: 100%;
   border-radius: 8px;
-  padding: 8px 16px 16px 16px;
+  padding: 16px 16px 16px 16px;
   elevation: 5;
   background-color: white;
   shadow-offset: 0px 2px;
@@ -45,6 +39,7 @@ const Title = styled.Text`
   color: #66666f;
   letter-spacing: 2px;
   text-transform: uppercase;
+  margin-bottom: 8px;
 `;
 
 const Content = styled.Text`

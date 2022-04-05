@@ -1,7 +1,7 @@
-import React, {useEffect, useRef} from 'react';
+import React from 'react';
 import styled from '@emotion/native';
 
-import {Animated, View, FlatList} from 'react-native';
+import {Animated, FlatList} from 'react-native';
 
 import Spacer from '../components/Spacer';
 import TimeInRangeBar from './TimeInRangeBar';
@@ -9,9 +9,28 @@ import {DayData} from '../screens/Overview';
 
 interface Props {
   weekData: DayData[];
+  opacityAnimation: Animated.Value;
+  fillAnimation: Animated.Value;
 }
 
-export default function BarCharts({weekData}: Props) {
+function interpolateThroughBars(
+  value: Animated.Value,
+  index: number,
+  totalBars: number,
+) {
+  return value.interpolate({
+    inputRange: [index / totalBars, (index + 1) / totalBars],
+    outputRange: [0, 1],
+    extrapolate: 'clamp',
+  });
+}
+
+export default function BarCharts({
+  weekData,
+  fillAnimation,
+  opacityAnimation,
+}: Props) {
+  const totalBars = weekData.length;
   return (
     <Container>
       <FlatList
@@ -27,6 +46,16 @@ export default function BarCharts({weekData}: Props) {
             <TimeInRangeBar
               weekDay={day.day.substring(0, 2)}
               percentageDecimal={day.timeInRangeDecimal}
+              barFillAnimation={interpolateThroughBars(
+                fillAnimation,
+                index,
+                totalBars,
+              )}
+              opacityAnimation={interpolateThroughBars(
+                opacityAnimation,
+                index,
+                totalBars,
+              )}
             />
           );
         }}
