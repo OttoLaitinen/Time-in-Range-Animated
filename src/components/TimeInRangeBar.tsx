@@ -13,13 +13,13 @@ interface Props {
   barFillAnimation: Animated.AnimatedInterpolation;
 }
 
-export default function TimeInRangeBar({
+const TimeInRangeBar = ({
   weekDay,
   percentageDecimal,
   animDurMs = 2000,
   opacityAnimation,
   barFillAnimation,
-}: Props) {
+}: Props) => {
   const [isCounting, setIsCounting] = useState(false);
   const percentage = Math.round(percentageDecimal * 100);
 
@@ -56,7 +56,7 @@ export default function TimeInRangeBar({
       <WeekDayText>{weekDay}</WeekDayText>
     </Container>
   );
-}
+};
 
 const Container = styled(Animated.View)`
   display: flex;
@@ -95,3 +95,5 @@ const WeekDayText = styled.Text`
   color: #66666f;
   text-transform: capitalize;
 `;
+
+export default TimeInRangeBar;

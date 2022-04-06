@@ -21,12 +21,12 @@ interface Props {
   countUpDurMs?: number;
 }
 
-export default function CircularProgress({
+const CircularProgress = ({
   animatedProgress,
   entryAnimation,
   percentageDecimal,
   countUpDurMs = 1000,
-}: Props) {
+}: Props) => {
   const [isCounting, setIsCounting] = useState(false);
 
   animatedProgress.addListener(s => {
@@ -89,7 +89,7 @@ export default function CircularProgress({
       </PercentageView>
     </Container>
   );
-}
+};
 
 const Container = styled(Animated.View)`
   display: flex;
@@ -126,3 +126,5 @@ const Note = styled.Text`
   color: #66666f;
   letter-spacing: 1px;
 `;
+
+export default CircularProgress;

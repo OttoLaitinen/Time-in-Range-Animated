@@ -1,11 +1,14 @@
 import React, {useEffect, useRef} from 'react';
 import styled from '@emotion/native';
 import {Animated, Easing} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 import Spacer from '../components/Spacer';
 import Card from '../components/Card';
 import CircularProgress from '../components/CircularProgress';
 import BarCharts from '../components/BarCharts';
+import SafeArea from '../components/SafeArea';
+import TextButton from '../components/TextButton';
 
 export type DayData = {
   day: string;
@@ -36,7 +39,8 @@ function endingText(avgTiR: number) {
   return `Bummer! Your Time in Range average was only ${avgTiR}% last week. You can do better!`;
 }
 
-export default function Overview({weekData}: OverviewProps) {
+const Overview = ({weekData}: OverviewProps) => {
+  const navigation = useNavigation();
   const avgTiR =
     Math.round(
       (weekData.reduce((pv, cv) => pv + cv.timeInRangeDecimal, 0) /
@@ -103,72 +107,69 @@ export default function Overview({weekData}: OverviewProps) {
   ]);
 
   return (
-    <Container>
-      <Heading>Weekly report</Heading>
-      <Spacer amount={16} axis="y" />
+    <SafeArea>
+      <Container>
+        <TextButton title="Back" onPress={() => navigation.goBack()} />
 
-      <Card
-        content={endingText(avgTiR * 100)}
-        style={{
-          opacity: endCardAnimation,
-          transform: [
-            {
-              translateY: endCardAnimation.interpolate({
-                inputRange: [0, 1],
-                outputRange: [-10, 0],
-              }),
-            },
-          ],
-        }}
-      />
-      <Spacer amount={24} axis="y" />
+        <Spacer amount={16} axis="y" />
 
-      <CircularProgress
-        animatedProgress={animatedCircularProgress}
-        entryAnimation={circularProgressEntryAnimation}
-        countUpDurMs={animDurations.circularProgress.fill}
-        percentageDecimal={avgTiR}
-      />
-      <Spacer amount={32} axis="y" />
+        <Card
+          content={endingText(avgTiR * 100)}
+          style={{
+            opacity: endCardAnimation,
+            transform: [
+              {
+                translateY: endCardAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [-10, 0],
+                }),
+              },
+            ],
+          }}
+        />
+        <Spacer amount={24} axis="y" />
 
-      <BarCharts
-        weekData={weekData}
-        fillAnimation={tirBarsFillAnimation}
-        opacityAnimation={tirBarsOpacityAnimation}
-      />
-      <Spacer amount={16} axis="y" />
+        <CircularProgress
+          animatedProgress={animatedCircularProgress}
+          entryAnimation={circularProgressEntryAnimation}
+          countUpDurMs={animDurations.circularProgress.fill}
+          percentageDecimal={avgTiR}
+        />
 
-      <Card
-        title="Time in Range"
-        content={InfoCardText}
-        style={{
-          opacity: infoCardAnimation,
-          transform: [
-            {
-              translateY: infoCardAnimation.interpolate({
-                inputRange: [0, 1],
-                outputRange: [25, 0],
-              }),
-            },
-          ],
-        }}
-      />
-    </Container>
+        <Spacer amount={32} axis="y" />
+
+        <BarCharts
+          weekData={weekData}
+          fillAnimation={tirBarsFillAnimation}
+          opacityAnimation={tirBarsOpacityAnimation}
+        />
+        <Spacer amount={16} axis="y" />
+
+        <Card
+          title="Time in Range"
+          content={InfoCardText}
+          style={{
+            opacity: infoCardAnimation,
+            transform: [
+              {
+                translateY: infoCardAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [25, 0],
+                }),
+              },
+            ],
+          }}
+        />
+      </Container>
+    </SafeArea>
   );
-}
+};
 
 const Container = styled.View`
   flex: 1;
   align-items: flex-start;
-  padding: 0px 16px 0 16px;
+  padding: 8px 16px 0 16px;
   background-color: white;
 `;
 
-const Heading = styled.Text`
-  font-size: 20px;
-  font-family: 'Karla-Regular';
-  font-weight: bold;
-  color: #66666f;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-`;
+export default Overview;

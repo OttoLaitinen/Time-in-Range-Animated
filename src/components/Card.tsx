@@ -8,14 +8,14 @@ interface Props {
   style?: Animated.AnimatedProps<ViewStyle>;
 }
 
-export default function Card({title, content, style}: Props) {
+const Card = ({title, content, style}: Props) => {
   return (
     <Container style={style}>
       {title && <Title>{title}</Title>}
       <Content>{content}</Content>
     </Container>
   );
-}
+};
 
 const Container = styled(Animated.View)`
   display: flex;
@@ -49,3 +49,5 @@ const Content = styled.Text`
   letter-spacing: 1px;
   line-height: 24px;
 `;
+
+export default Card;

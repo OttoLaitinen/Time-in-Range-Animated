@@ -25,11 +25,7 @@ function interpolateThroughBars(
   });
 }
 
-export default function BarCharts({
-  weekData,
-  fillAnimation,
-  opacityAnimation,
-}: Props) {
+const BarCharts = ({weekData, fillAnimation, opacityAnimation}: Props) => {
   const totalBars = weekData.length;
   return (
     <Container>
@@ -64,7 +60,7 @@ export default function BarCharts({
       />
     </Container>
   );
-}
+};
 
 const Container = styled.View`
   width: 100%;
@@ -72,3 +68,5 @@ const Container = styled.View`
   justify-content: center;
   align-items: center;
 `;
+
+export default BarCharts;
